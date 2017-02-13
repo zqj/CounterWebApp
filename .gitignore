@@ -1,0 +1,16 @@
+### Maven template
+target
+
+# IntelliJ IDEA Files
+.idea/*.xml
+.idea/*/*.xml
+*.idea
+*.iml
+*.ipr
+*.iws
+
+#eclipse
+*.classpath
+.setting
+*.project
+
