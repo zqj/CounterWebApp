@@ -26,5 +26,14 @@
 <h2>
 <a href="downloadExcel.do">下载Excel</a>
 </h2>
+<hr>
+<h2>
+    下载文件
+</h2>
+<form action="downloadFile.do" method="post" >
+
+    <input type="text" name="filePath"><br/><br/>
+    <input type="submit" value="提交">
+</form>
 </body>
 </html>

@@ -1,23 +1,20 @@
 package com.yiibai.controller;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.yiibai.util.ExcelUtils;
 import com.yiibai.util.FileUploadingUtil;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,8 +28,8 @@ public class BaseController {
     private final static org.slf4j.Logger logger = LoggerFactory.getLogger(BaseController.class);
 
     //通过Spring的autowired注解获取spring默认配置的request
-    @Autowired
-    private HttpServletRequest request;
+    //@Autowired
+    //private HttpServletRequest request;
     @Autowired
     private HttpServletResponse response;
 
@@ -162,6 +159,74 @@ public class BaseController {
             System.out.println(fileNames[i]);
         }
         return mav;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/testJson.do", method = RequestMethod.GET,produces="application/json;charset=UTF-8")
+    public String upload(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        String content = "";
+        JSONArray json = new JSONArray();
+        JSONObject object = new JSONObject();
+        object.put("fileName", "dddd");
+        json.add(object);
+
+        return content;
+
+    }
+
+    /**
+     * 文件下载
+     * @Description:
+      * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value="/downloadFile.do")
+    public String downloadFile(@RequestParam("filePath") String filePath,
+                               HttpServletRequest request, HttpServletResponse response) {
+        if (filePath != null) {
+            File file = new File(filePath);
+            if (file.exists()) {
+                response.setContentType("application/force-download");// 设置强制下载不打开
+                response.addHeader("Content-Disposition",
+                        "attachment;fileName=" + file.getName());// 设置文件名
+                byte[] buffer = new byte[1024];
+                FileInputStream fis = null;
+                BufferedInputStream bis = null;
+                try {
+                    fis = new FileInputStream(file);
+                    bis = new BufferedInputStream(fis);
+                    OutputStream os = response.getOutputStream();
+                    int i = bis.read(buffer);
+                    while (i != -1) {
+                        os.write(buffer, 0, i);
+                        i = bis.read(buffer);
+                    }
+                } catch (Exception e) {
+                    // TODO: handle exception
+                    e.printStackTrace();
+                } finally {
+                    if (bis != null) {
+                        try {
+                            bis.close();
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                    if (fis != null) {
+                        try {
+                            fis.close();
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+        return null;
     }
 
 

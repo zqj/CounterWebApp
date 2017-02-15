@@ -17,7 +17,38 @@
     <jcl-over-slf4j.version>1.7.5</jcl-over-slf4j.version>
   </properties>
 
+  <repositories>
+    <repository>
+      <id>afis</id>
+      <name>AFIS Repositories</name>
+      <url>http://192.168.1.7:8081/nexus/content/groups/afis/</url>
+    </repository>
+    <repository>
+      <id>webbase</id>
+      <name>AFIS Repositories</name>
+      <url>http://192.168.1.7:8081/nexus/content/groups/webbase/</url>
+    </repository>
+  </repositories>
+  <distributionManagement>
+		<repository>
+			<id>webbase-core</id>
+			<url>http://192.168.1.7:8081/nexus/content/repositories/webbase-core/</url>
+		</repository>
+
+		<snapshotRepository>
+			<id>webbase-snapshot</id>
+			<url>http://192.168.1.7:8081/nexus/content/repositories/webbase-snapshot/</url>
+		</snapshotRepository>
+
+	</distributionManagement>
   <dependencies>
+<!--
+    <dependency>
+      <groupId>com.afis.web</groupId>
+      <artifactId>afis-web-core</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+-->
     <!-- Unit Test -->
     <dependency>
       <groupId>junit</groupId>
@@ -62,11 +93,7 @@
       <version>${spring.version}</version>
     </dependency>
     <!-- jstl -->
-    <dependency>
-      <groupId>jstl</groupId>
-      <artifactId>jstl</artifactId>
-      <version>${jstl.version}</version>
-    </dependency>
+
 
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -74,7 +101,11 @@
       <version>2.5</version>
       <scope>provided</scope>
     </dependency>
-
+     <dependency>
+      <groupId>jstl</groupId>
+      <artifactId>jstl</artifactId>
+      <version>${jstl.version}</version>
+    </dependency>
     <dependency>
       <groupId>commons-fileupload</groupId>
       <artifactId>commons-fileupload</artifactId>
@@ -98,19 +129,7 @@
     <finalName>CounterWebApp</finalName>
 
     <plugins>
-      <!-- Eclipse project -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-eclipse-plugin</artifactId>
-        <version>2.9</version>
-        <configuration>
-          <!-- Always download and attach dependencies source code -->
-          <downloadSources>true</downloadSources>
-          <downloadJavadocs>false</downloadJavadocs>
-          <!-- Avoid type mvn eclipse:eclipse -Dwtpversion=2.0 -->
-          <wtpversion>2.0</wtpversion>
-        </configuration>
-      </plugin>
+
 
       <!-- Set JDK Compiler Level -->
       <plugin>
@@ -125,15 +144,6 @@
       </plugin>
 
       <!-- For Maven Tomcat Plugin -->
-      <plugin>
-        <groupId>org.apache.tomcat.maven</groupId>
-        <artifactId>tomcat7-maven-plugin</artifactId>
-        <version>2.2</version>
-        <configuration>
-          <path>/CounterWebApp</path>
-        </configuration>
-      </plugin>
-
       <plugin>
         <groupId>org.apache.tomcat.maven</groupId>
         <artifactId>tomcat7-maven-plugin</artifactId>
